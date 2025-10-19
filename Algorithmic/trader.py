@@ -7,6 +7,7 @@ import yfinance as yf
 import time
 from dotenv import load_dotenv
 import os
+import numpy as np
 
 #IMports api keys
 load_dotenv()
@@ -74,6 +75,12 @@ df['drawdown'] = (df['portfolio_value'] - df['cumulative_max']) / df['cumulative
 max_drawdown = df['drawdown'].min()
 print(f"Maximum drawdown: {max_drawdown:.2%}")
 
+# Annualized Sharpe ratio
+avg_daily_return = df['daily_return'].mean()
+daily_vol = df['daily_return'].std()
+sharpe_ratio = (avg_daily_return / daily_vol) * np.sqrt(252)
+
+print(f"Annualized Sharpe ratio: {sharpe_ratio:.2f}")
 
 final_worth = cash + shares * df['close'].iloc[-1]
 print(f"Final net worth: ${final_worth:.2f}")
